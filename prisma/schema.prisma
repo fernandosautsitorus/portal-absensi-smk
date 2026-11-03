@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  nama      String
+  email     String?
+  telepon   String?
+  role      String   @default("GURU") // ADMIN, GURU, KEPSEK, ORANGTUA
+  aktif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  kelasWali    Kelas[]       @relation("WaliKelas")
+  notifikasi   Notifikasi[]
+  siswaAnak    Siswa[]       @relation("OrangTua")
+}
+
+model Jurusan {
+  id        String   @id @default(cuid())
+  kode      String   @unique
+  nama      String
+  kelas     Kelas[]
+  createdAt DateTime @default(now())
+}
+
+model Kelas {
+  id          String   @id @default(cuid())
+  nama        String   @unique
+  tingkat     Int
+  jurusanId   String
+  waliKelasId String?
+  tahunAjaran String   @default("2026/2027")
+  createdAt   DateTime @default(now())
+
+  jurusan   Jurusan @relation(fields: [jurusanId], references: [id])
+  waliKelas User?   @relation("WaliKelas", fields: [waliKelasId], references: [id])
+  siswa     Siswa[]
+}
+
+model Siswa {
+  id           String    @id @default(cuid())
+  nisn         String    @unique
+  nama         String
+  jenisKelamin String    // L atau P
+  tempatLahir  String?
+  tanggalLahir DateTime?
+  alamat       String?
+  telepon      String?
+  foto         String?
+  kelasId      String
+  orangTuaId   String?
+  aktif        Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  kelas    Kelas     @relation(fields: [kelasId], references: [id])
+  orangTua User?     @relation("OrangTua", fields: [orangTuaId], references: [id])
+  absensi  Absensi[]
+}
+
+model Absensi {
+  id        String   @id @default(cuid())
+  siswaId   String
+  tanggal   DateTime
+  status    String   // HADIR, SAKIT, IZIN, ALPA, TERLAMBAT
+  catatan   String?
+  dikunci   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  siswa Siswa @relation(fields: [siswaId], references: [id], onDelete: Cascade)
+
+  @@unique([siswaId, tanggal])
+}
+
+model Notifikasi {
+  id        String   @id @default(cuid())
+  userId    String?
+  tipe      String   @default("UMUM") // ABSENSI, PERINGATAN, UMUM
+  judul     String
+  pesan     String
+  dibaca    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
