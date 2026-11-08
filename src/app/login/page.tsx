@@ -142,10 +142,44 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-gray-100">
-              <p className="text-xs text-gray-400 text-center">
-                Akun Demo: admin/admin123 · guru.budi/guru123 · kepsek/kepsek123 · ortu.ahmad/ortu123
+            <div className="mt-6 pt-4 border-t border-gray-100">
+              <p className="text-xs text-gray-500 font-medium mb-2 text-center">
+                Klik untuk isi otomatis akun demo:
               </p>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <button
+                  type="button"
+                  onClick={() => { setUsername('admin'); setPassword('password123'); }}
+                  className="px-2 py-1.5 bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 rounded border border-gray-200 text-left transition"
+                >
+                  👑 <strong>Admin</strong>
+                  <div className="text-[10px] text-gray-400">admin</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setUsername('kepsek'); setPassword('password123'); }}
+                  className="px-2 py-1.5 bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 rounded border border-gray-200 text-left transition"
+                >
+                  🎓 <strong>Kepsek</strong>
+                  <div className="text-[10px] text-gray-400">kepsek</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setUsername('guru.budi'); setPassword('password123'); }}
+                  className="px-2 py-1.5 bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 rounded border border-gray-200 text-left transition"
+                >
+                  👨‍🏫 <strong>Guru/Wali</strong>
+                  <div className="text-[10px] text-gray-400">guru.budi / guru1</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setUsername('ortu.ahmad'); setPassword('password123'); }}
+                  className="px-2 py-1.5 bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 rounded border border-gray-200 text-left transition"
+                >
+                  👪 <strong>Orang Tua</strong>
+                  <div className="text-[10px] text-gray-400">ortu.ahmad / ortu1</div>
+                </button>
+              </div>
             </div>
           </div>
         </div>
